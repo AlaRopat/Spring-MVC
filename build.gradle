@@ -12,8 +12,9 @@ repositories {
 dependencies {
     compile 'org.springframework:spring-webmvc:4.3.8.RELEASE'
     compile 'org.springframework:spring-jdbc:4.3.8.RELEASE'
-    compile 'org.springframework:spring-test:4.3.8.RELEASE'
-    testCompile 'junit:junit:4.12'
+    compile 'javax.servlet:jstl:1.2'
     compile 'org.aspectj:aspectjweaver:1.8.10'
     compile 'com.h2database:h2:1.4.195'
+    testCompile 'org.springframework:spring-test:4.3.8.RELEASE'
+    testCompile 'junit:junit:4.12'
 }
