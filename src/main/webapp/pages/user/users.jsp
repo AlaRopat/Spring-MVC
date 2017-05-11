@@ -6,7 +6,7 @@
         <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
     </head>
     <body>
-        <jsp:include page="header.jsp"/>
+        <jsp:include page="../header.jsp"/>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">

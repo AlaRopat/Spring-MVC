@@ -27,7 +27,7 @@ public class UsersController {
     public ModelAndView getAllUsers() {
         List<User> all = userService.getAll();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("users");
+        modelAndView.setViewName("user/users");
         List<UserDTO> userDTOs = all.stream()
                 .map(UserDTO::of)
                 .collect(Collectors.toList());
@@ -37,7 +37,7 @@ public class UsersController {
 
     @GetMapping(path = "/add")
     public String addUserPage() {
-        return "add_user";
+        return "user/add_user";
     }
 
     @PostMapping(path = "/add")
@@ -59,8 +59,8 @@ public class UsersController {
     @GetMapping(path = "/{userId}")
     public ModelAndView showUser(@PathVariable("userId") Long id) {
         User user = userService.getById(id);
-        ModelAndView modelAndView = new ModelAndView("show_user");
-        modelAndView.addObject("user", user);
+        ModelAndView modelAndView = new ModelAndView("user/show_user");
+        modelAndView.addObject("user", UserDTO.of(user));
         return modelAndView;
     }
 
