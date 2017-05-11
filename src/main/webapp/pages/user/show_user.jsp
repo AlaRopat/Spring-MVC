@@ -16,15 +16,15 @@
                 <form>
                     <div class="form-group">
                         <label for="userName">Name</label>
-                        <input type="text" class="form-control" id="userName" placeholder="User Name" name="name" value="${user.name}">
+                        <input type="text" class="form-control" id="userName" placeholder="User Name" name="name" value="${user.name}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="dateOfBirth">Birthday</label>
-                        <input type="text" class="form-control" id="dateOfBirth" placeholder="Date of birth (dd-mm-yyyy)" name="birthday" value="${user.birthday}">
+                        <input type="text" class="form-control" id="dateOfBirth" placeholder="Date of birth (dd-mm-yyyy)" name="birthday" value="${user.birthday}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="${user.email}">
+                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="${user.email}" readonly>
                     </div>
                 </form>
             </div>

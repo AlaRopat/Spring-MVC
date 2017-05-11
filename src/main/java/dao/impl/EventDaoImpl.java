@@ -50,7 +50,11 @@ public class EventDaoImpl extends AbstractDao implements EventDao {
 
     @Override
     public Event getEventByName(String name) {
-        return getJdbcTemplate().queryForObject(SELECT_EVENT_BY_NAME, getEventRowMapper(), name);
+        List<Event> query = getJdbcTemplate().query(SELECT_EVENT_BY_NAME, getEventRowMapper(), name);
+        if (query.size() > 0) {
+            return query.get(0);
+        }
+        return null;
     }
 
     @Override

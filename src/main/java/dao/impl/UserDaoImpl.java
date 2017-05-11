@@ -52,7 +52,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User getUserByEmail(String email) {
-        return getJdbcTemplate().queryForObject(SELECT_USER_BY_EMAIL, getUserRowMapper(), email);
+        List<User> query = getJdbcTemplate().query(SELECT_USER_BY_EMAIL, getUserRowMapper(), email);
+        if (query.size() > 0) {
+            return query.get(0);
+        }
+        return null;
     }
 
     @Override

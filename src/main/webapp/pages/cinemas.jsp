@@ -13,7 +13,11 @@
 
                     <ul class="list-group">
                         <c:forEach items="${all_cinemas}" var="cinema">
-                            <li class="list-group-item">${cinema.name} with total seats: ${cinema.numberOfSeats}</li>
+                            <li class="list-group-item">${cinema.name} with total seats: ${cinema.numberOfSeats}. Vip Seats:
+                                <c:forEach items="${cinema.vipSeats}" var="vipSeat">
+                                    ${vipSeat}&nbsp
+                                </c:forEach>
+                            </li>
                         </c:forEach>
                     </ul>
                 </div>
