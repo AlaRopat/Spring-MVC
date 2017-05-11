@@ -1,19 +1,18 @@
 package controllers;
 
+import dto.UserDTO;
 import entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import services.UserService;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nikolay Shuvaev on 10.05.2017
@@ -29,7 +28,10 @@ public class UsersController {
         List<User> all = userService.getAll();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("users");
-        modelAndView.addObject("all_users", all);
+        List<UserDTO> userDTOs = all.stream()
+                .map(UserDTO::of)
+                .collect(Collectors.toList());
+        modelAndView.addObject("all_users", userDTOs);
         return modelAndView;
     }
 
@@ -39,9 +41,32 @@ public class UsersController {
     }
 
     @PostMapping(path = "/add")
-    public String addUser(@RequestBody Map<String, String> params, BindingResult result, Model model) {
-//        userService.save()
-        System.out.println("post");
-        return "users";
+    public String addUser(@RequestParam("name") String name, @DateTimeFormat(pattern = "yyyy-mm-dd") @RequestParam("birthday") Date birthday, @RequestParam("email") String email) {
+        if (name == null) {
+            return "redirect:/users/add?error=name";
+        }
+        if (birthday == null) {
+            return "redirect:/users/add?error=birthday";
+        }
+        if (email == null) {
+            return "redirect:/users/add?error=email";
+        }
+
+        long userId = userService.save(name, birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), email);
+        return "redirect:/users";
+    }
+
+    @GetMapping(path = "/{userId}")
+    public ModelAndView showUser(@PathVariable("userId") Long id) {
+        User user = userService.getById(id);
+        ModelAndView modelAndView = new ModelAndView("show_user");
+        modelAndView.addObject("user", user);
+        return modelAndView;
+    }
+
+    @PostMapping(path = "/{userId}/delete")
+    public String deleteUserSubmit(@PathVariable("userId") Long id) {
+        userService.remove(id);
+        return "redirect:/users";
     }
 }

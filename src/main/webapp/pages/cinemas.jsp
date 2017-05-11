@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>Title</title>
-        <link href="<c:url value="/resources/css/bootstrap.css" />" rel="stylesheet">
+        <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
     </head>
     <body>
         <jsp:include page="header.jsp"/>
