@@ -69,4 +69,13 @@ public class UsersController {
         userService.remove(id);
         return "redirect:/users";
     }
+
+    @GetMapping(path = "/search")
+    public String searchUser(@RequestParam("email") String email) {
+        User user = userService.getUserByEmail(email.trim());
+        if (user == null) {
+            return "redirect:/users";
+        }
+        return "forward:/users/" + user.getId();
+    }
 }

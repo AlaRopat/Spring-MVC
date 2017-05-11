@@ -9,9 +9,17 @@
         <jsp:include page="../header.jsp"/>
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4">
                     <a href="<c:url value="/users/add" />" type="button" class="btn btn-default">Add user</a>
-                <div>
+                </div>
+                <div class="col-md-4">
+                    <form class="navbar-form navbar-left" role="search" action="<c:url value="/users/search" />" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="email">
+                        </div>
+                        <button type="submit" class="btn btn-default">Search</button>
+                    </form>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12 ">
@@ -20,7 +28,7 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        ${user.name} with total seats: ${user.email}
+                                        ${user.name}  ${user.birthday} ${user.email}
                                     </div>
                                     <div class="col-md-4">
                                         <form class="form-inline" action="<c:url value="/users/${user.id}/delete" />" method="post">
