@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by macbook on 02.01.17.
+ * Created by macbook on 02.01.17
  */
 public class User {
     private final Long id;
