@@ -1,7 +1,6 @@
 package dao;
 
 import entities.Event;
-import entities.Rating;
 
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
  * Created by macbook on 03.01.17.
  */
 public interface EventDao {
-    long save(String name, double basePrice, Rating rating);
+    long save(Event event);
 
     void remove(long id);
 

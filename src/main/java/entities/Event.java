@@ -1,18 +1,29 @@
 package entities;
 
+import javax.persistence.*;
+
 /**
- * Created by macbook on 02.01.17.
+ * Created by macbook on 02.01.17
  */
+@Entity
+@Table(name = "events")
 public class Event {
 
-    private final long id;
-    private final String name;
-    private final double basePrice;
-    private final Rating rating;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "base_price")
+    private double basePrice;
+    @Column(name = "rating")
+    @Enumerated(EnumType.STRING)
+    private Rating rating;
 
-    public Event(long id, String name, double basePrice, Rating rating) {
+    public Event() {
 
-        this.id = id;
+    }
+    public Event(String name, double basePrice, Rating rating) {
         this.name = name;
         this.basePrice = basePrice;
         this.rating = rating;
@@ -32,5 +43,21 @@ public class Event {
 
     public Rating getRating() {
         return rating;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 }

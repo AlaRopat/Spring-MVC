@@ -8,8 +8,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -41,7 +43,13 @@ public class DatabaseConfig {
         return dataSource;
     }
 
+    @Bean
+    public PlatformTransactionManager transactionManager() {
 
+        JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        return txManager;
+    }
 
     private DatabasePopulator createDatabasePopulator() {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();

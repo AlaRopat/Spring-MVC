@@ -88,7 +88,9 @@ public class PurchasedTicketDaoImpl extends AbstractDao implements PurchasedTick
         String name = rs.getString("events.name");
         double basePrice = rs.getDouble("events.base_price");
         Rating rating = Rating.valueOf(rs.getString("events.rating"));
-        return new Event(id, name, basePrice, rating);
+        Event event = new Event(name, basePrice, rating);
+        event.setId(id);
+        return event;
     }
 
     public Seat getSeat(ResultSet rs) throws SQLException {

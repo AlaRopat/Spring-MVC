@@ -39,13 +39,18 @@ public class BookingServiceTest extends TestCase {
     private UserService userService;
 
     private Event testEvent;
+    private Event highRatedEvent;
 
     @Before
     public void init() {
         long eventId = eventService.save("Test Event 1", 20.0, Rating.MID);
         testEvent = eventService.getById(eventId);
+        eventId = eventService.save("Test Event 2", 20.0, Rating.HIGH);
+        highRatedEvent = eventService.getById(eventId);
+
         Auditorium auditorium = auditoriumService.getByName(TEST_AUDITORIUM);
         auditoriumService.addEvent(testEvent, auditorium, EVENT_DATE_TIME);
+        auditoriumService.addEvent(highRatedEvent, auditorium, EVENT_DATE_TIME.plusDays(1));
     }
 
     @Test
@@ -66,8 +71,7 @@ public class BookingServiceTest extends TestCase {
 
     @Test
     public void testGetTicketsPriceForHighRatedEvent() {
-        Event highRatedEvent = new Event(testEvent.getId(), testEvent.getName(), testEvent.getBasePrice(), Rating.HIGH);
-        double totalPrice = bookingService.getTotalPrice(highRatedEvent, EVENT_DATE_TIME, null,
+        double totalPrice = bookingService.getTotalPrice(highRatedEvent, EVENT_DATE_TIME.plusDays(1), null,
                 new HashSet<>(Arrays.asList(Seat.of(11, STANDARD), Seat.of(12, STANDARD), Seat.of(13, STANDARD))));
         assertEquals(90.0, totalPrice);
     }

@@ -22,8 +22,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public long save(String name, double basePrice, Rating raiting) {
-        return eventDao.save(name, basePrice, raiting);
+    public long save(String name, double basePrice, Rating rating) {
+
+        return eventDao.save(new Event(name, basePrice, rating));
     }
 
     @Override
