@@ -6,14 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import repositories.EventRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by Nikolay Shuvaev on 17.05.2017
  */
 @Repository
-public class EventDaoRepository implements EventDao {
+public class EventDaoImpl implements EventDao {
 
     private EventRepository repository;
 
@@ -41,9 +42,8 @@ public class EventDaoRepository implements EventDao {
     @Override
     public List<Event> getAll() {
         Iterable<Event> all = repository.findAll();
-        List<Event> result = new ArrayList<>();
-        all.forEach(result::add);
-        return result;
+        return StreamSupport.stream(all.spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     @Autowired

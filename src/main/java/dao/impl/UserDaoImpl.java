@@ -2,75 +2,55 @@ package dao.impl;
 
 import dao.UserDao;
 import entities.User;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import repositories.UserRepository;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by macbook on 03.01.17
  */
 @Repository
 public class UserDaoImpl extends AbstractDao implements UserDao {
-    private static final String SELECT_ALL_USER = "SELECT * FROM users;";
-    private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?;";
-    private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?;";
-    private static final String INSERT_USER = "INSERT INTO users(name, birthday,email) VALUES(?, ?, ?);";
-    private static final String DELETE_USER = "DELETE FROM users WHERE id = ?";
+    private UserRepository repository;
 
     @Override
     public long save(String name, LocalDate birthday, String email) {
-        final KeyHolder holder = new GeneratedKeyHolder();
-
-        getJdbcTemplate().update(connection -> {
-            final PreparedStatement ps = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, name);
-            ps.setDate(2, Date.valueOf(birthday));
-            ps.setString(3, email);
-            return ps;
-        }, holder);
-
-        return holder.getKey().longValue();
+        User user = new User(-1L, name, birthday, email);
+        User save = repository.save(user);
+        return save.getId();
     }
 
     @Override
     public void remove(long id) {
-        getJdbcTemplate().update(DELETE_USER, id);
+        repository.delete(id);
     }
 
     @Override
     public User getById(long id) {
-        return getJdbcTemplate().queryForObject(SELECT_USER_BY_ID, getUserRowMapper(), id);
+        return repository.findOne(id);
 
     }
 
     @Override
     public User getUserByEmail(String email) {
-        List<User> query = getJdbcTemplate().query(SELECT_USER_BY_EMAIL, getUserRowMapper(), email);
-        if (query.size() > 0) {
-            return query.get(0);
-        }
-        return null;
+        return repository.findByEmail(email);
     }
 
     @Override
     public List<User> getAll() {
-        return getJdbcTemplate().query(SELECT_ALL_USER, getUserRowMapper());
+        Iterable<User> all = repository.findAll();
+        return StreamSupport.stream(all.spliterator(), false)
+                .collect(Collectors.toList());
     }
 
-    private static RowMapper<User> getUserRowMapper() {
-        return (rs, i) -> {
-            long user_id = rs.getLong("id");
-            String name = rs.getString("name");
-            Date birthday = rs.getDate("birthday");
-            String user_email = rs.getString("email");
-            return new User(user_id, name, birthday.toLocalDate(), user_email);
-        };
+    @Autowired
+    public void setRepository(UserRepository repository) {
+        this.repository = repository;
     }
+
 }
