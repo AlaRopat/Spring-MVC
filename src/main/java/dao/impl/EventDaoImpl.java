@@ -2,7 +2,6 @@ package dao.impl;
 
 import dao.EventDao;
 import entities.Event;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import repositories.EventRepository;
 
@@ -14,9 +13,7 @@ import java.util.stream.StreamSupport;
  * Created by Nikolay Shuvaev on 17.05.2017
  */
 @Repository
-public class EventDaoImpl implements EventDao {
-
-    private EventRepository repository;
+public class EventDaoImpl extends BaseDao<EventRepository> implements EventDao {
 
     @Override
     public long save(Event event) {
@@ -46,8 +43,4 @@ public class EventDaoImpl implements EventDao {
                 .collect(Collectors.toList());
     }
 
-    @Autowired
-    public void setRepository(EventRepository repository) {
-        this.repository = repository;
-    }
 }

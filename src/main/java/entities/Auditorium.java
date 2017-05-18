@@ -1,19 +1,39 @@
 package entities;
 
+import javax.persistence.*;
 import java.util.Set;
 
 /**
- * Created by macbook on 02.01.17.
+ * Created by macbook on 02.01.17
  */
+@Entity
 public class Auditorium {
-    private final String name;
-    private final Integer numberOfSeats;
-    private final Set<Integer> vipSeats;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "num_of_seats")
+    private Integer numberOfSeats;
+    @ElementCollection(targetClass = Integer.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "vip_seats")
+    private Set<Integer> vipSeats;
+
+    public Auditorium() {
+    }
 
     public Auditorium(String name, Integer numberOfSeats, Set<Integer> vipSeats) {
         this.name = name;
         this.numberOfSeats = numberOfSeats;
         this.vipSeats = vipSeats;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

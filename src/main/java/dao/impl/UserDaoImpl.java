@@ -2,7 +2,6 @@ package dao.impl;
 
 import dao.UserDao;
 import entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import repositories.UserRepository;
 
@@ -15,8 +14,7 @@ import java.util.stream.StreamSupport;
  * Created by macbook on 03.01.17
  */
 @Repository
-public class UserDaoImpl extends AbstractDao implements UserDao {
-    private UserRepository repository;
+public class UserDaoImpl extends BaseDao<UserRepository> implements UserDao {
 
     @Override
     public long save(String name, LocalDate birthday, String email) {
@@ -46,11 +44,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         Iterable<User> all = repository.findAll();
         return StreamSupport.stream(all.spliterator(), false)
                 .collect(Collectors.toList());
-    }
-
-    @Autowired
-    public void setRepository(UserRepository repository) {
-        this.repository = repository;
     }
 
 }
